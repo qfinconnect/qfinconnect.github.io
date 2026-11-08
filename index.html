@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QFinConnect</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column like a programme page; three content pillars stacked as cards, contact block at the end */
+:root {
+  --bg: #eef2f1;
+  --surface: #ffffff;
+  --ink: #12302b;
+  --muted: #557069;
+  --line: #d3dedb;
+  --accent: #0f7a5c;
+  --accent-ink: #ffffff;
+  --gold: #b07d12;
+  --neg: #b2442f;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1816; --surface: #14231f; --ink: #e3eeeb; --muted: #93aca6;
+    --line: #263a35; --accent: #3fbf93; --accent-ink: #062019; --gold: #e0b04a; --neg: #ef8a73;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1816; --surface: #14231f; --ink: #e3eeeb; --muted: #93aca6;
+  --line: #263a35; --accent: #3fbf93; --accent-ink: #062019; --gold: #e0b04a; --neg: #ef8a73;
+  color-scheme: dark;
+}
+body { margin: 0;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 56px 40px; display: grid; gap: 48px; }
+
+header { display: grid; gap: 14px; }
+.handle { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: .02em; }
+h1 {
+  font-family: var(--display); font-weight: 700; font-size: clamp(2.6rem, 8vw, 4.2rem);
+  line-height: .95; letter-spacing: -0.035em; margin: 0; text-wrap: balance;
+}
+h1 .q { color: var(--accent); }
+.lede { margin: 0; max-width: 58ch; color: var(--muted); font-size: 1.08rem; }
+.lede strong { color: var(--ink); font-weight: 600; }
+.cta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+.section-label {
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); display: flex; align-items: center; gap: 12px; margin: 0 0 18px;
+}
+.section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.series { display: grid; gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  padding: 24px; display: grid; grid-template-columns: 140px 1fr; gap: 20px;
+}
+.meta { display: grid; gap: 4px; align-content: start; }
+.meta .no { font-family: var(--display); font-weight: 700; font-size: 1.6rem; line-height: 1; }
+.meta .when { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+.body { min-width: 0; display: grid; gap: 12px; }
+.body h2 { font-family: var(--display); font-weight: 500; font-size: 1.45rem; line-height: 1.2; margin: 0; text-wrap: balance; }
+.topics { margin: 0; color: var(--muted); font-size: .95rem; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  font: 600 14px/1 var(--body); text-decoration: none; padding: 10px 16px; border-radius: 999px;
+  border: 1px solid var(--accent); color: var(--accent); background: transparent; cursor: pointer;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn:hover { filter: brightness(1.08); }
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.ledger { overflow-x: auto; border-top: 1px dashed var(--line); padding-top: 12px; }
+.ledger table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.ledger th { text-align: left; font-weight: 500; color: var(--muted); padding: 2px 0; }
+.ledger td { text-align: right; padding: 2px 0; }
+.ledger tr.total th, .ledger tr.total td { color: var(--ink); font-weight: 500; border-top: 1px solid var(--line); padding-top: 6px; }
+.neg { color: var(--neg); }
+.pos { color: var(--accent); }
+.ledger caption { caption-side: bottom; text-align: left; font-family: var(--body); font-size: 12px; color: var(--muted); padding-top: 6px; }
+
+.contact { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: grid; gap: 14px; }
+.contact p { margin: 0; color: var(--muted); }
+.contact dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; align-items: center; }
+.contact dt { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.contact dd { margin: 0; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-family: var(--mono); font-size: 14px; overflow-wrap: anywhere; user-select: all; }
+.contact dd a { color: var(--accent); }
+.copy { font: 600 12px/1 var(--body); padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); cursor: pointer; user-select: none; }
+.copy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+footer { border-top: 1px solid var(--line); padding-top: 20px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+footer a { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .card { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+  .meta { grid-auto-flow: column; justify-content: start; gap: 12px; align-items: baseline; }
+  .wrap { padding-block: 36px 32px; gap: 36px; }
+  .contact dl { grid-template-columns: 1fr; gap: 4px; }
+  .contact dd { margin-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="handle">@qfinconnect · TikTok</div>
+    <h1><span class="q">Q</span>FinConnect</h1>
+    <p class="lede">We're about <strong>finance and investing literacy</strong>, <strong>inspirational quotes</strong> and <strong>scholarship info</strong>: short videos to help you manage money, stay motivated, and find your next study opportunity.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">Follow on TikTok</a>
+      <a class="btn" href="#contact">Business &amp; collabs</a>
+    </div>
+  </header>
+
+  <main>
+    <h3 class="section-label">What we share</h3>
+    <div class="series">
+
+      <article class="card">
+        <div class="meta"><span class="no">💰</span><span class="when">Finance &amp; investing</span></div>
+        <div class="body">
+          <h2>Finance and Investing Literacy</h2>
+          <p class="topics">Simple, practical tips on managing money and investing</p>
+          <div class="actions">
+            <a class="btn primary" href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">Watch on TikTok</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="meta"><span class="no">🌟</span><span class="when">Inspiration</span></div>
+        <div class="body">
+          <h2>Inspirational quotes</h2>
+          <p class="topics">Daily motivation on money, discipline, and building the life you want</p>
+          <div class="actions">
+            <a class="btn primary" href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">Watch on TikTok</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="meta"><span class="no">🔥</span><span class="when">Scholarships</span></div>
+        <div class="body">
+          <h2>Scholarship info</h2>
+          <p class="topics">Scholarship openings, requirements, and deadlines worth knowing about</p>
+          <div class="actions">
+            <a class="btn primary" href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">Watch on TikTok</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <h3 class="section-label" id="contact-h" style="margin:0">Business · Endorse · Collab</h3>
+    <p>For business enquiries, endorsements, or collaborations, send us a DM on TikTok or an email.</p>
+    <dl>
+      <dt>Email</dt>
+      <dd><span id="email">qfinconnect@gmail.com</span><button class="copy" type="button" id="copy-email" data-target="email">Copy</button></dd>
+      <dt>TikTok</dt>
+      <dd><a href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">tiktok.com/@qfinconnect</a></dd>
+    </dl>
+  </section>
+
+  <footer>
+    <span>QFinConnect · 2026</span>
+    <a href="https://www.tiktok.com/@qfinconnect" target="_blank" rel="noopener">tiktok.com/@qfinconnect</a>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    var el = document.getElementById(btn.dataset.target);
+    var text = el.textContent;
+    function selectIt() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected'; }
+    try {
+      navigator.clipboard.writeText(text).then(function () { btn.textContent = 'Copied'; }, selectIt);
+    } catch (e) { selectIt(); }
+    setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+  });
+});
+</script>
+</body>
+</html>
